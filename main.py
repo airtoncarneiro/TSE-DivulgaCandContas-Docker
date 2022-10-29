@@ -1,15 +1,15 @@
 import os
 
-# TSE API enviroment variable
+
 TSE_API_ENVIROMENT = os.environ.get("TSE_API")
 match TSE_API_ENVIROMENT:
     case 'eleicao_ordinaria':
-        from lib.eleicao_ordinaria import Eleicao_Ordinaria
+        from lib.tse_candidatos import EleicaoOrdinaria
     case _:
         raise Exception("TSE_API enviroment variable not found!")
 
-
-if __name__ == "__main__":
-    tse = Eleicao_Ordinaria()
+if __name__ == '__main__':
+    tse = EleicaoOrdinaria(env=TSE_API_ENVIROMENT)
     tse.download()
-    print(1)
+    tse.save()
+    print("Fim.")
