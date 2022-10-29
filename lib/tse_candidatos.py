@@ -10,11 +10,9 @@ class TSE_Candidatos():
             config = ConfigParser(interpolation=ExtendedInterpolation())
             config.sections()
             config.read('config.ini')
-            # url = "{}/{}/".format(config["default"]["url_base"], \
-            #     config[env]["endpoint"])
             url = config[env]["url"]
-            input = config[env].get("folder_input")
-            output = config[env]["folder_output"]
+            input = config[env].get("input_folder")
+            output = config[env]["output_folder"]
         except:
             raise Exception("Arquivo config.ini não encontrado ou mal configurado.")
 
@@ -51,10 +49,3 @@ class TSE_Candidatos():
                 return json.loads(r.data.decode("utf-8"))
             case _:
                 raise Exception("Erro:{}\nDescrição:{}")
-
-
-
-class EleicaoOrdinaria(TSE_Candidatos):
-    def download(self):
-        http = urllib3.PoolManager()
-        self.r = super().download(http)
