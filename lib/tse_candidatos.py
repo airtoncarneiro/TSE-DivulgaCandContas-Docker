@@ -35,12 +35,12 @@ class TSE_Candidatos():
     #     with open('data.json', 'r') as fp:
     #         data = json.load(fp)
 
-
     def save(self):
         with open(self.output, 'w') as file:
             json.dump(self.r, file)
-
     
+    def read_from_file(self):
+        pass    
     
     def download(self, pool_manager:urllib3.PoolManager):
         r = pool_manager.request(method="GET", url=self.url, headers=self.headers)        

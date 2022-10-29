@@ -12,6 +12,7 @@ match TSE_API_ENVIROMENT:
 
 if __name__ == '__main__':
     tse = TSE(env=TSE_API_ENVIROMENT)
+    tse.read_from_file()
     tse.download()
     tse.save()
     print("Fim.")
