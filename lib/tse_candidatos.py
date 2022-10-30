@@ -14,7 +14,8 @@ class TSE_Candidatos():
             input = config[env].get("input_folder")
             output = config[env]["output_folder"]
         except:
-            raise Exception("Arquivo config.ini não encontrado ou mal configurado.")
+            raise Exception("Arquivo config.ini não encontrado ou mal "\
+                "configurado.")
 
         self.url = url
         self.headers = {
@@ -29,21 +30,18 @@ class TSE_Candidatos():
         if input:
             self.input = "{}\\{}".format(os.getcwd(), input)
         self.output = "{}\\{}".format(os.getcwd(), output)
-    
-    
-    # def load(self):
-    #     with open('data.json', 'r') as fp:
-    #         data = json.load(fp)
 
     def save(self):
         with open(self.output, 'w') as file:
             json.dump(self.r, file)
     
     def read_from_file(self):
-        pass    
+        pass
     
     def download(self, pool_manager:urllib3.PoolManager):
-        r = pool_manager.request(method="GET", url=self.url, headers=self.headers)        
+        r = pool_manager.request(method="GET",
+                                url=self.url, 
+                                headers=self.headers)
         match r.status:
             case 200:
                 return json.loads(r.data.decode("utf-8"))
