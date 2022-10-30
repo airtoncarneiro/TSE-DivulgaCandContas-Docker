@@ -5,7 +5,7 @@ import urllib3
 class TSE(TSE_Candidatos):
     def download(self):
         http = urllib3.PoolManager()
-        self.r = super().download(http)
+        self.r = super().download(url=self.url, pool_manager=http)
 
     def read_from_file(self):
         pass

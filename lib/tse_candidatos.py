@@ -3,6 +3,7 @@ import urllib3
 import os
 import json
 from pathlib import Path
+import re
 
 
 class TSE_Candidatos():
@@ -34,8 +35,9 @@ class TSE_Candidatos():
         self.output = "{}\\{}\\{}".format(os.getcwd(), output_folder, 
                                         output_file)
 
-    def save(self):
-        with open(self.output, 'w') as file:
+    def save(self, full_file_name:str):
+        os.makedirs(os.path.dirname(full_file_name), exist_ok=True)
+        with open(full_file_name, 'w') as file:
             json.dump(self.r, file)
     
     def read_from_file(self):
@@ -47,12 +49,21 @@ class TSE_Candidatos():
                 for obj in objs:
                     yield obj
     
-    def download(self, pool_manager:urllib3.PoolManager):
+    def download(self, url:str, pool_manager:urllib3.PoolManager):
         r = pool_manager.request(method="GET",
-                                url=self.url, 
+                                url=url, 
                                 headers=self.headers)
         match r.status:
             case 200:
                 return json.loads(r.data.decode("utf-8"))
             case _:
                 raise Exception("Erro:{}\nDescrição:{}".format(r.status, ''))
+    
+    def _replace_arguments(self, text:str, custom_dict:dict):
+        pattern = "{\w*}"
+        # Substitui os parâmetros da URL por seus respectivos valores
+        for matched in re.findall(pattern, text):
+            key = [matched[1:-1]][0]
+            text = text.replace(matched, str(custom_dict.get(key, matched)))
+
+        return text
