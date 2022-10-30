@@ -5,6 +5,7 @@ desenho.png
 
 # Folders
 output/*
+output/!.gitkeep
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
