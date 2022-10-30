@@ -37,8 +37,8 @@ class TSE_Candidatos():
 
     def save(self, full_file_name:str):
         os.makedirs(os.path.dirname(full_file_name), exist_ok=True)
-        with open(full_file_name, 'w') as file:
-            json.dump(self.r, file)
+        with open(full_file_name, 'w', encoding='utf8') as file:
+            json.dump(self.r, file, ensure_ascii=False)
     
     def read_from_file(self):
         folder = self.input
