@@ -1,7 +1,8 @@
 from configparser import ConfigParser, ExtendedInterpolation
-import json
 import urllib3
 import os
+import json
+from pathlib import Path
 
 
 class TSE_Candidatos():
@@ -11,8 +12,9 @@ class TSE_Candidatos():
             config.sections()
             config.read('config.ini')
             url = config[env]["url"]
-            input = config[env].get("input_folder")
-            output = config[env]["output_folder"]
+            input_folder = config[env].get("input_folder")
+            output_folder = config[env]["output_folder"]
+            output_file = config[env].get("output_file")
         except:
             raise Exception("Arquivo config.ini não encontrado ou mal "\
                 "configurado.")
@@ -27,16 +29,23 @@ class TSE_Candidatos():
             "User-Agent":"Mozilla/5.0 (Windows NT 6.1) AppleWebKit/535.2"\
                 " (KHTML, like Gecko) Chrome/15.0.861.0 Safari/535.2"
         }
-        if input:
-            self.input = "{}\\{}".format(os.getcwd(), input)
-        self.output = "{}\\{}".format(os.getcwd(), output)
+        if input_folder:
+            self.input = "{}\\{}".format(os.getcwd(), input_folder)
+        self.output = "{}\\{}\\{}".format(os.getcwd(), output_folder, 
+                                        output_file)
 
     def save(self):
         with open(self.output, 'w') as file:
             json.dump(self.r, file)
     
     def read_from_file(self):
-        pass
+        folder = self.input
+        files = Path(folder).glob('*.json')
+        for file in files:
+            with open(file, encoding='utf-8') as json_file:
+                objs = json.load(json_file)
+                for obj in objs:
+                    yield obj
     
     def download(self, pool_manager:urllib3.PoolManager):
         r = pool_manager.request(method="GET",
@@ -46,4 +55,4 @@ class TSE_Candidatos():
             case 200:
                 return json.loads(r.data.decode("utf-8"))
             case _:
-                raise Exception("Erro:{}\nDescrição:{}")
+                raise Exception("Erro:{}\nDescrição:{}".format(r.status, ''))
