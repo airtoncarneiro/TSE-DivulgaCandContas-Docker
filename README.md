@@ -7,8 +7,13 @@ https://divulgacandcontas.tse.jus.br/divulga/rest
 
 ### Dos endpoints
 1. **/v1/eleicao/ordinarias/**<br>
-Retorna todas as eleições ocorridas desde 2004.
-(*aguardar novos endpoints)
+Retorna todas as eleições ocorridas desde 2004.  
+
+2. **/v1/eleicao/buscar/{uf}/{codEleicao}/municipios
+> Onde:  
+>> {uf}: Sigla da unidade federativa  
+>> {codEleicao}: Código que cada eleição recebe  
+
 
 ### Da execução
 O arquivo main.py é compartilhado por todos os microserviços, fazendo uma chamada específica ao serviço que será usado através da checagem da variável de ambiente **TSE_API**.
