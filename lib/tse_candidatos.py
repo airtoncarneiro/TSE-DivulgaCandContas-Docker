@@ -45,6 +45,7 @@ class TSE_Candidatos():
     def read_from_file(self):
         files = Path(self.input_folder).rglob(self.input_file)
         for file in files:
+            custom_dict = self._makeADictFromPath(str(file))
             with open(file, encoding='utf-8') as json_file:
                 objs = json.load(json_file)
                 # Como a iteração deve ser na lista vindo do JSON
@@ -52,11 +53,15 @@ class TSE_Candidatos():
                 # do arquivo, garantir retornar sempre uma lista
                 if type(objs) == list:
                     for obj in objs:
+                        for key, value in custom_dict.items():
+                            obj[key] = value
                         yield obj
                 else:
                     for _, value in objs.items():
                         if type(value) == list:
                             for obj in value:
+                                for key, value in custom_dict.items():
+                                    obj[key] = value
                                 yield obj
     
     def download(self, url:str, pool_manager:urllib3.PoolManager):
@@ -77,3 +82,11 @@ class TSE_Candidatos():
             text = text.replace(matched, str(custom_dict.get(key, matched)))
 
         return text
+    
+    def _makeADictFromPath(self, path:str):
+        customDict = dict()
+        for key_value in path.split('\\'):
+            if '=' in key_value:
+                key, value = key_value.split('=')
+                customDict[key] = value
+        return customDict
