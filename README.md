@@ -9,13 +9,21 @@ https://divulgacandcontas.tse.jus.br/divulga/rest
 1. **/v1/eleicao/ordinarias/**<br>
 Retorna todas as eleições ocorridas desde 2004.  
 
-2. **/v1/eleicao/buscar/{uf}/{codEleicao}/municipios
+2. **/v1/eleicao/buscar/{uf}/{id}/municipios
 > Onde:  
 >> {uf}: Sigla da unidade federativa  
->> {codEleicao}: Código que cada eleição recebe  
+>> {id}: Código que cada eleição recebe  
 
+3. **/v1/candidatura/listar/{ano}/{codigo}/{id}/{tipo}/candidatos
+> Onde:  
+>> {ano}: Ano da eleicao  
+>> {codigo}: Código do município  
+>> {id}: Código que cada eleição recebe  
+>> {tipo}: 11, 12 ou 13, prefeito, vice-prefeito ou vereador, respectivamente   
 
 ### Da execução
-O arquivo main.py é compartilhado por todos os microserviços, fazendo uma chamada específica ao serviço que será usado através da checagem da variável de ambiente **TSE_API**.
+O arquivo main.py é compartilhado por todos os microserviços fazendo uma chamada específica ao serviço que será usado através da checagem da variável de ambiente **TSE_API**.
 Atribuir:
-* *eleicao_ordinaria* se o serviço a executar for para obter as eleições ordinárias.
+* *ordinaria* se o serviço a executar for para obter as eleições ordinárias.  
+* *municipios* se for para obter a lista de municípios de uma eleição.
+* *candidatos* se para para obter a lista de candidatos de uma eleição e município.
