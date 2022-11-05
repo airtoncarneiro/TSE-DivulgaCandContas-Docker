@@ -9,17 +9,17 @@ class TSE(TSE_Candidatos):
                 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO', ]
 
         http = urllib3.PoolManager()
-        for eleicao in super().read_from_file():
-            if eleicao['ano'] == 2020:
-                print(eleicao['ano'])
+        for ordinarias_file in super().read_from_file():
+            if ordinarias_file['ano'] == 2020:
+                print(ordinarias_file['ano'])
                 for uf in UFS:
-                    eleicao['siglaUF'] = uf
+                    ordinarias_file['siglaUF'] = uf
                     url = self._replace_arguments(text=self.url,
-                        custom_dict=eleicao)
+                        custom_dict=ordinarias_file)
                     self.r = super().download(url=url, pool_manager=http)
 
                     # se há eleições na UF
                     if self.r['municipios']:
                         file = self._replace_arguments(text=self.output,
-                            custom_dict=eleicao)
+                            custom_dict=ordinarias_file)
                         super().save(full_file_name=file)

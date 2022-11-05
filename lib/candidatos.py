@@ -10,6 +10,12 @@ class TSE(TSE_Candidatos):
 
         http = urllib3.PoolManager()
         for municipios_UF_file in super().read_from_file():
-            print(municipios_UF_file)
             for tipo in TIPOS:
-                print(tipo)
+                municipios_UF_file['tipo'] = tipo
+                url = self._replace_arguments(text=self.url,
+                    custom_dict=municipios_UF_file)
+                self.r = super().download(url=url, pool_manager=http)
+
+                file = self._replace_arguments(text=self.output,
+                    custom_dict=municipios_UF_file)
+                super().save(full_file_name=file)
