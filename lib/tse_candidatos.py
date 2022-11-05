@@ -47,8 +47,17 @@ class TSE_Candidatos():
         for file in files:
             with open(file, encoding='utf-8') as json_file:
                 objs = json.load(json_file)
-                for obj in objs:
-                    yield obj
+                # Como a iteração deve ser na lista vindo do JSON
+                # e, algumas vezes, a lista não é o único objeto
+                # do arquivo, garantir retornar sempre uma lista
+                if type(objs) == list:
+                    for obj in objs:
+                        yield obj
+                else:
+                    for _, value in objs.items():
+                        if type(value) == list:
+                            for obj in value:
+                                yield obj
     
     def download(self, url:str, pool_manager:urllib3.PoolManager):
         r = pool_manager.request(method="GET",
