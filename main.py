@@ -3,10 +3,12 @@ import os
 
 TSE_API_ENVIROMENT = os.environ.get("TSE_API")
 match TSE_API_ENVIROMENT:
-    case 'ordinarias':
+    case "ordinarias":
         from lib.ordinarias import TSE
-    case 'municipios':
+    case "municipios":
         from lib.municipios import TSE
+    case "candidatos":
+        from lib.candidatos import TSE
     case _:
         raise Exception("TSE_API enviroment variable not found!")
 
