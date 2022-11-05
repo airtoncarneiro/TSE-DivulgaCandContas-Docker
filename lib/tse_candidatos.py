@@ -14,6 +14,7 @@ class TSE_Candidatos():
             config.read('config.ini')
             url = config[env]["url"]
             input_folder = config[env].get("input_folder")
+            input_file = config[env].get("input_file")
             output_folder = config[env]["output_folder"]
             output_file = config[env].get("output_file")
         except:
@@ -31,7 +32,8 @@ class TSE_Candidatos():
                 " (KHTML, like Gecko) Chrome/15.0.861.0 Safari/535.2"
         }
         if input_folder:
-            self.input = "{}\\{}".format(os.getcwd(), input_folder)
+            self.input_folder = "{}\\{}".format(os.getcwd(), input_folder)
+            self.input_file = input_file
         self.output = "{}\\{}\\{}".format(os.getcwd(), output_folder, 
                                         output_file)
 
@@ -41,8 +43,7 @@ class TSE_Candidatos():
             json.dump(self.r, file, ensure_ascii=False)
     
     def read_from_file(self):
-        folder = self.input
-        files = Path(folder).glob('*.json')
+        files = Path(self.input_folder).rglob(self.input_file)
         for file in files:
             with open(file, encoding='utf-8') as json_file:
                 objs = json.load(json_file)
