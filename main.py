@@ -2,7 +2,6 @@ import os
 
 
 TSE_API_ENVIROMENT = os.environ.get("TSE_API")
-TSE_API_ENVIROMENT = 'ordinarias'
 match TSE_API_ENVIROMENT:
     case 'ordinarias':
         from lib.ordinarias import TSE
