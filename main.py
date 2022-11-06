@@ -9,6 +9,8 @@ match TSE_API_ENVIROMENT:
         from lib.municipios import TSE
     case "candidatos":
         from lib.candidatos import TSE
+    case "candidato":
+        from lib.candidato import TSE
     case _:
         raise Exception("TSE_API enviroment variable not found!")
 
