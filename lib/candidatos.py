@@ -3,7 +3,17 @@ import urllib3
 
 
 class TSE(TSE_Candidatos):
-    def download(self):
+    """Classe herdada de TSE_Candidatos com sobreescrição do método de
+       download.
+
+    Args:
+        TSE_Candidatos (_type_): Classe pai com métodos e operações em cima
+        das APIs do TSE.
+    """
+    def download(self)->None:
+        """Realiza a operação de GET no site do TSE e salve o resultado
+           num arquivo sobreescrevendo o método pai.
+        """
         TIPOS = {"11":"Prefeito",
                  "12":"Vice-Prefeito",
                  "13":"Vereador"}

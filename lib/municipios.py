@@ -3,7 +3,17 @@ import urllib3
 
 
 class TSE(TSE_Candidatos):
-    def download(self):
+    """Classe herdada de TSE_Candidatos com sobreescrição do método de
+       download.
+
+    Args:
+        TSE_Candidatos (_type_): Classe pai com métodos e operações em cima
+        das APIs do TSE.
+    """
+    def download(self)->None:
+        """Realiza a operação de GET no site do TSE e salve o resultado
+           num arquivo sobreescrevendo o método pai.
+        """
         UFS = ['AC', 'AL', 'AP', 'AM', 'BA', 'CE', 'DF', 'ES', 'GO', 'MA', 
                 'MT', 'MS', 'MG', 'PA', 'PB', 'PR', 'PE', 'PI', 'RJ', 'RN', 
                 'RS', 'RO', 'RR', 'SC', 'SP', 'SE', 'TO', ]

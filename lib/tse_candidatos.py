@@ -1,13 +1,32 @@
-from configparser import ConfigParser, ExtendedInterpolation
-import urllib3
-import os
 import json
-from pathlib import Path
+import os
 import re
+from configparser import ConfigParser, ExtendedInterpolation
+from pathlib import Path
+
+import urllib3
 
 
 class TSE_Candidatos():
-    def __init__(self, env):
+    """Classe (pai) responsável pelas tratativas e ações que cada API no TSE
+       deve fazer.
+    """
+    def __init__(self, env:str)->None:
+        """Inicialização da classe.
+
+        Args:
+            env (str): Variável de ambiente.
+            Valores possíveis:
+              * ordinarias
+              * municipios
+              * candidatos
+              * candidato
+
+        Raises:
+            Exception: Se a variável de ambiente não for válida
+              ou algumas variáveis no arquivo config.ini não
+              localizadas.
+        """
         try:
             config = ConfigParser(interpolation=ExtendedInterpolation())
             config.sections()
@@ -37,12 +56,26 @@ class TSE_Candidatos():
         self.output = "{}\\{}\\{}".format(os.getcwd(), output_folder, 
                                         output_file)
 
-    def save(self, full_file_name:str):
+    def save(self, full_file_name:str)->None:
+        """Salva o arquivo.
+
+        Args:
+            full_file_name (str): Nome do arquivo incluindo o full path.
+        """
         os.makedirs(os.path.dirname(full_file_name), exist_ok=True)
         with open(full_file_name, 'w', encoding='utf8') as file:
             json.dump(self.r, file, ensure_ascii=False)
     
-    def read_from_file(self):
+    def read_from_file(self)->dict:
+        """Lê os arquivos.
+
+        Returns:
+            dict: Retorna um dicionário.
+
+        Yields:
+            Iterator[dict]: Como pode haver vários arquivos e, cada um deles,
+                pode ter uma lista de dicionários, retornar cada um com Yield.
+        """
         files = Path(self.input_folder).rglob(self.input_file)
         for file in files:
             custom_dict = self._makeADictFromPath(str(file))
@@ -67,7 +100,19 @@ class TSE_Candidatos():
                                     obj[key] = value
                                 yield obj
     
-    def download(self, url:str, pool_manager:urllib3.PoolManager):
+    def download(self, url:str, pool_manager:urllib3.PoolManager)->dict:
+        """Realiza o método GET na API do TSE.
+
+        Args:
+            url (str): URL da chamada.
+            pool_manager (urllib3.PoolManager): Gerenciador da conexão.
+
+        Raises:
+            Exception: Caso 'status code' != 200.
+
+        Returns:
+            dict: Resposta ao GET.
+        """
         r = pool_manager.request(method="GET",
                                 url=url, 
                                 headers=self.headers)
@@ -77,7 +122,18 @@ class TSE_Candidatos():
             case _:
                 raise Exception("Erro:{}\nDescrição:{}".format(r.status, ''))
     
-    def _replace_arguments(self, text:str, custom_dict:dict):
+    def _replace_arguments(self, text:str, custom_dict:dict)->str:
+        """Faz a correspondência entre os parâmetros passados e suas
+           respecivas chaves/valores, substituindo-os.
+
+        Args:
+            text (str): Texto com chaves e valores a serem substituídos.
+            custom_dict (dict): Dicionário com as chaves e valores para
+                referência de pesquisa e substituição.
+
+        Returns:
+            str: Texto com as chaves e valores substituídos.
+        """
         pattern = "{\w*}"
         custom_text = text
         # Substitui os parâmetros da URL por seus respectivos valores
@@ -87,7 +143,17 @@ class TSE_Candidatos():
 
         return custom_text
     
-    def _makeADictFromPath(self, path:str):
+    def _makeADictFromPath(self, path:str)->dict:
+        """Do PATH substitui as chaves/valores. Cada chave/valor do path fará
+           parte do dicionário.
+           Ex.: ../output/ano=2020/  -> dict = {'ano':2020}
+
+        Args:
+            path (str): Path do arquivo.
+
+        Returns:
+            dict: Path com as chaves/valores substituídos.
+        """
         customDict = dict()
         for key_value in path.split('\\'):
             if '=' in key_value:
