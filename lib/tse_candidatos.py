@@ -76,12 +76,13 @@ class TSE_Candidatos():
     
     def _replace_arguments(self, text:str, custom_dict:dict):
         pattern = "{\w*}"
+        custom_text = text
         # Substitui os parâmetros da URL por seus respectivos valores
-        for matched in re.findall(pattern, text):
+        for matched in re.findall(pattern, custom_text):
             key = [matched[1:-1]][0]
-            text = text.replace(matched, str(custom_dict.get(key, matched)))
+            custom_text = custom_text.replace(matched, str(custom_dict.get(key, matched)))
 
-        return text
+        return custom_text
     
     def _makeADictFromPath(self, path:str):
         customDict = dict()
