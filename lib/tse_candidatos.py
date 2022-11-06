@@ -60,6 +60,9 @@ class TSE_Candidatos():
                     for _, value in objs.items():
                         if type(value) == list:
                             for obj in value:
+                                if "candidatos" in objs and \
+                                not("codCand") in obj:
+                                   obj["codCand"] = obj["id"]
                                 for key, value in custom_dict.items():
                                     obj[key] = value
                                 yield obj
