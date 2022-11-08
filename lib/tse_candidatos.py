@@ -32,9 +32,9 @@ class TSE_Candidatos():
             config.sections()
             config.read('config.ini')
             url = config[env]["url"]
-            input_folder = os.path.normpath(config[env].get("input_folder"))
+            input_folder = config[env].get("input_folder")
             input_file = config[env].get("input_file")
-            output_folder = os.path.normpath(config[env]["output_folder"])
+            output_folder = config[env]["output_folder"]
             output_file = config[env].get("output_file")
         except:
             raise Exception("Arquivo config.ini não encontrado ou mal "\
@@ -51,9 +51,9 @@ class TSE_Candidatos():
                 " (KHTML, like Gecko) Chrome/15.0.861.0 Safari/535.2"
         }
         if input_folder:
-            self.input_folder = os.path.join(os.getcwd(), input_folder)
+            self.input_folder = os.path.join(os.getcwd(), os.path.normpath(input_folder))
             self.input_file = input_file
-        self.output = os.path.join(os.getcwd(), output_folder, output_file)
+        self.output = os.path.join(os.getcwd(), output_folder, os.path.normpath(output_file))
 
     def save(self, full_file_name:str)->None:
         """Salva o arquivo.
