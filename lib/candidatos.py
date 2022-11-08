@@ -1,5 +1,6 @@
 from lib.tse_candidatos import TSE_Candidatos
 import urllib3
+import logging
 
 
 class TSE(TSE_Candidatos):
@@ -22,6 +23,15 @@ class TSE(TSE_Candidatos):
         for municipios_UF_file in super().read_from_file():
             for tipo in TIPOS:
                 municipios_UF_file['tipo'] = tipo
+                    
+                logging.info('Obter lista de candidatos: ano={}, codigo={}, "\
+                    "id={}, tipo={}'\
+                    .format(municipios_UF_file['ano'],
+                            municipios_UF_file['codigo'],
+                            municipios_UF_file['id'],
+                            municipios_UF_file['tipo']
+                            ))
+                
                 url = self._replace_arguments(text=self.url,
                     custom_dict=municipios_UF_file)
                 self.r = super().download(url=url, pool_manager=http)

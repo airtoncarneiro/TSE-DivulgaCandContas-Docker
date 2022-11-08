@@ -1,5 +1,6 @@
 from lib.tse_candidatos import TSE_Candidatos
 import urllib3
+import logging
 
 
 class TSE(TSE_Candidatos):
@@ -16,6 +17,15 @@ class TSE(TSE_Candidatos):
         """
         http = urllib3.PoolManager()
         for candidatos_file in super().read_from_file():
+                    
+            logging.info('Obter info de candidato: ano={}, codigo={}, id={},"\
+                "codCand={}'\
+                .format(candidatos_file['ano'],
+                        candidatos_file['codigo'],
+                        candidatos_file['id'],
+                        candidatos_file['codCand']
+                        ))
+            
             url = self._replace_arguments(text=self.url,
                 custom_dict=candidatos_file)
             self.r = super().download(url=url, pool_manager=http)

@@ -1,5 +1,6 @@
 from lib.tse_candidatos import TSE_Candidatos
 import urllib3
+import logging
 
 
 class TSE(TSE_Candidatos):
@@ -24,6 +25,12 @@ class TSE(TSE_Candidatos):
                 print(ordinarias_file['ano'])
                 for uf in UFS:
                     ordinarias_file['siglaUF'] = uf
+                    
+                    logging.info('Obter lista de municipios: siglaUF={}, id={}'\
+                        .format(ordinarias_file['siglaUF'],
+                                ordinarias_file['id']
+                                ))
+                    
                     url = self._replace_arguments(text=self.url,
                         custom_dict=ordinarias_file)
                     self.r = super().download(url=url, pool_manager=http)
