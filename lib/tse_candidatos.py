@@ -32,9 +32,9 @@ class TSE_Candidatos():
             config.sections()
             config.read('config.ini')
             url = config[env]["url"]
-            input_folder = config[env].get("input_folder")
+            input_folder = os.path.normpath(config[env].get("input_folder"))
             input_file = config[env].get("input_file")
-            output_folder = config[env]["output_folder"]
+            output_folder = os.path.normpath(config[env]["output_folder"])
             output_file = config[env].get("output_file")
         except:
             raise Exception("Arquivo config.ini não encontrado ou mal "\
