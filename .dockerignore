@@ -1,0 +1,10 @@
+.git
+.gitignore
+.vscode
+__pycache__
+*.code-workspace
+*.png
+Dockerfile
+docker-compose
+README.md
+output/*
