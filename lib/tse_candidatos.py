@@ -51,10 +51,9 @@ class TSE_Candidatos():
                 " (KHTML, like Gecko) Chrome/15.0.861.0 Safari/535.2"
         }
         if input_folder:
-            self.input_folder = "{}\\{}".format(os.getcwd(), input_folder)
+            self.input_folder = os.path.join(os.getcwd(), input_folder)
             self.input_file = input_file
-        self.output = "{}\\{}\\{}".format(os.getcwd(), output_folder, 
-                                        output_file)
+        self.output = os.path.join(os.getcwd(), output_folder, output_file)
 
     def save(self, full_file_name:str)->None:
         """Salva o arquivo.
