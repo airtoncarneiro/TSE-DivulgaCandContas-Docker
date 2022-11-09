@@ -1,5 +1,6 @@
 import os
 import logging
+from time import sleep
 
 
 logging.basicConfig(format="%(asctime)s - %(process)d - %(levelname)s "\
@@ -12,6 +13,7 @@ logging.basicConfig(format="%(asctime)s - %(process)d - %(levelname)s "\
 logging.info("==== Inicio. =====")
 
 TSE_API_ENVIROMENT = os.environ.get("TSE_API")
+TSE_API_ENVIROMENT="ordinarias"
 match TSE_API_ENVIROMENT:
     case "ordinarias":
         from lib.ordinarias import TSE
@@ -27,7 +29,14 @@ match TSE_API_ENVIROMENT:
         raise TypeError(msg)
 
 if __name__ == '__main__':
-    tse = TSE(env=TSE_API_ENVIROMENT)
-    tse.download()
-    
+    qtdExecucoes = 1
+    while qtdExecucoes < 6:
+        logging.info("Execucao #{}".format(qtdExecucoes))
+        
+        tse = TSE(env=TSE_API_ENVIROMENT)
+        tse.download()
+        
+        sleep(60 * 5)
+        qtdExecucoes += 1
+                
     logging.info("==== Fim.     ====")
