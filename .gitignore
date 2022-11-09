@@ -11,3 +11,4 @@ output/!.gitkeep
 __pycache__/
 *.py[cod]
 *$py.class
+app.log
