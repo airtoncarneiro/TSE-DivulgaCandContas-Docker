@@ -30,7 +30,7 @@ class TSE_Candidatos():
         try:
             config = ConfigParser(interpolation=ExtendedInterpolation())
             config.sections()
-            config.read('config.ini')
+            config.read("config.ini")
             url = config[env]["url"]
             input_folder = config[env].get("input_folder")
             input_file = config[env].get("input_file")
@@ -62,7 +62,7 @@ class TSE_Candidatos():
             full_file_name (str): Nome do arquivo incluindo o full path.
         """
         os.makedirs(os.path.dirname(full_file_name), exist_ok=True)
-        with open(full_file_name, 'w', encoding='utf8') as file:
+        with open(full_file_name, "w", encoding="utf8") as file:
             json.dump(self.r, file, ensure_ascii=False)
     
     def read_from_file(self)->dict:
@@ -78,7 +78,7 @@ class TSE_Candidatos():
         files = Path(self.input_folder).rglob(self.input_file)
         for file in files:
             custom_dict = self._makeADictFromPath(str(file))
-            with open(file, encoding='utf-8') as json_file:
+            with open(file, encoding="utf-8") as json_file:
                 objs = json.load(json_file)
                 # Como a iteração deve ser na lista vindo do JSON
                 # e, algumas vezes, a lista não é o único objeto
@@ -119,7 +119,7 @@ class TSE_Candidatos():
             case 200:
                 return json.loads(r.data.decode("utf-8"))
             case _:
-                raise Exception("Erro:{}\nDescrição:{}".format(r.status, ''))
+                raise Exception("Erro:{}\nDescrição:{}".format(r.status, ""))
     
     def _replace_arguments(self, text:str, custom_dict:dict)->str:
         """Faz a correspondência entre os parâmetros passados e suas
@@ -140,12 +140,15 @@ class TSE_Candidatos():
             key = [matched[1:-1]][0]
             custom_text = custom_text.replace(matched, str(custom_dict.get(key, matched)))
 
+        if not 'http' in custom_text:
+            os.path.normpath(custom_text)
+            
         return custom_text
     
     def _makeADictFromPath(self, path:str)->dict:
         """Do PATH substitui as chaves/valores. Cada chave/valor do path fará
            parte do dicionário.
-           Ex.: ../output/ano=2020/  -> dict = {'ano':2020}
+           Ex.: ../output/ano=2020/  -> dict = {"ano":2020}
 
         Args:
             path (str): Path do arquivo.
@@ -154,8 +157,8 @@ class TSE_Candidatos():
             dict: Path com as chaves/valores substituídos.
         """
         customDict = dict()
-        for key_value in path.split('\\'):
-            if '=' in key_value:
-                key, value = key_value.split('=')
+        for key_value in path.split("\\"):
+            if "=" in key_value:
+                key, value = key_value.split("=")
                 customDict[key] = value
         return customDict

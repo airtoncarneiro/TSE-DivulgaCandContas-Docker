@@ -1,6 +1,7 @@
 from lib.tse_candidatos import TSE_Candidatos
 import urllib3
 import logging
+import os
 
 
 class TSE(TSE_Candidatos):
@@ -22,20 +23,28 @@ class TSE(TSE_Candidatos):
         http = urllib3.PoolManager()
         for municipios_UF_file in super().read_from_file():
             for tipo in TIPOS:
-                municipios_UF_file['tipo'] = tipo
-                    
-                logging.info('Obter lista de candidatos: ano={}, codigo={}, "\
-                    "id={}, tipo={}'\
-                    .format(municipios_UF_file['ano'],
-                            municipios_UF_file['codigo'],
-                            municipios_UF_file['id'],
-                            municipios_UF_file['tipo']
-                            ))
-                
-                url = self._replace_arguments(text=self.url,
-                    custom_dict=municipios_UF_file)
-                self.r = super().download(url=url, pool_manager=http)
-
+                municipios_UF_file["tipo"] = tipo
+                tmp_params = "ano={}, codigo={}, id={}, tipo={}"\
+                    .format(municipios_UF_file["ano"],
+                            municipios_UF_file["codigo"],
+                            municipios_UF_file["id"],
+                            municipios_UF_file["tipo"]
+                            )
                 file = self._replace_arguments(text=self.output,
                     custom_dict=municipios_UF_file)
-                super().save(full_file_name=file)
+                if os.path.exists(file):
+                    logging.info("Já existe candidato: {}".format(tmp_params))
+                else:
+                    logging.info("Já existe candidatos: ano={}, codigo={}, "\
+                        "id={}, tipo={}"\
+                        .format(municipios_UF_file["ano"],
+                                municipios_UF_file["codigo"],
+                                municipios_UF_file["id"],
+                                municipios_UF_file["tipo"]
+                                ))
+                    
+                    url = self._replace_arguments(text=self.url,
+                        custom_dict=municipios_UF_file)
+                    self.r = super().download(url=url, pool_manager=http)
+
+                    super().save(full_file_name=file)

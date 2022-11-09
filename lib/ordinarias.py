@@ -15,7 +15,7 @@ class TSE(TSE_Candidatos):
         """Realiza a operação de GET no site do TSE e salve o resultado
            num arquivo sobreescrevendo o método pai.
         """
-        logging.info('Obter lista das eleicoes ordinarias.')
+        logging.info("Obter lista das eleicoes ordinarias.")
         http = urllib3.PoolManager()
         self.r = super().download(url=self.url, pool_manager=http)
         super().save(full_file_name=self.output)
