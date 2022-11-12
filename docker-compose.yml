@@ -1,0 +1,8 @@
+services:
+  ordinarias:
+    image: tse_cand:municipios
+    build: .
+    volumes:
+      -.:/app
+    environment:
+      - TSE-APP=municipios

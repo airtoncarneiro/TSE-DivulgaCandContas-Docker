@@ -7,11 +7,11 @@ COPY ./requirements.txt .
 RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
 
 COPY . .
-
-ENV TSE_API ordinarias
+ARG ENV=ordinarias
+ENV TSE_API=${ENV}
 
 CMD ["python", "main.py"]
 
-
-# docker run --name tse-cand -it --rm --entrypoint sh img_tsecand
+# docker build -t tse/candidatos .
+# docker run --name tse-ordinarias -it --rm --entrypoint sh tse/candidatos
 # docker volume create tse-datas

@@ -22,6 +22,8 @@ class TSE(TSE_Candidatos):
 
         http = urllib3.PoolManager()
         for ordinarias_file in super().read_from_file():
+            if ordinarias_file['ano'] != 2020:
+                continue
             for uf in UFS:
                 ordinarias_file["siglaUF"] = uf
                 

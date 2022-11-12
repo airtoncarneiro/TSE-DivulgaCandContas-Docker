@@ -4,6 +4,7 @@
 __pycache__
 *.code-workspace
 *.png
+app.log
 Dockerfile
 docker-compose
 README.md
