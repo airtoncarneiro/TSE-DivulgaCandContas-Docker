@@ -16,13 +16,23 @@ class TSE(TSE_Candidatos):
         """Realiza a operação de GET no site do TSE e salve o resultado
            num arquivo sobreescrevendo o método pai.
         """
-        TIPOS = {"11":"Prefeito",
+        TIPOS = {
+                 "1": "Presidente",
+                 "3": "Governador",
+                 "5": "Senador",
+                 "6": "Deputado Federal",
+                 "7": "Deputado Estadual",
+                 "11":"Prefeito",
                  "12":"Vice-Prefeito",
-                 "13":"Vereador"}
+                 "13":"Vereador"
+                 }
 
         http = urllib3.PoolManager()
         for municipios_UF_file in super().read_from_file():
             for tipo in TIPOS:
+                if not((tipo == '11') & (municipios_UF_file['nome'] == 'FORTALEZA')):
+                    continue
+                
                 municipios_UF_file["tipo"] = tipo
                 tmp_params = "ano={}, codigo={}, id={}, tipo={}"\
                     .format(municipios_UF_file["ano"],
