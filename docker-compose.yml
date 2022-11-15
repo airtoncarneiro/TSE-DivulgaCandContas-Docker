@@ -1,8 +1,35 @@
-services:
+services:    
   ordinarias:
-    image: tse_cand:municipios
     build: .
-    volumes:
-      -.:/app
     environment:
-      - TSE-APP=municipios
+      - TSE_API=ordinarias
+    <<: &default
+      image: tse_cand_contas
+      volumes:
+        - tse-jsons:/app
+      command: ["python", "main.py"]
+
+  municipios:
+    <<: *default
+    environment:
+      - TSE_API=municipios
+    depends_on:
+      - ordinarias
+
+  candidatos:
+    <<: *default
+    environment:
+      - TSE_API=candidatos
+    depends_on:
+      - municipios
+
+  candidato:
+    <<: *default
+    environment:
+      - TSE_API=candidato
+    depends_on:
+      - candidatos
+
+
+volumes:
+  tse-jsons:

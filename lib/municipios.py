@@ -22,9 +22,12 @@ class TSE(TSE_Candidatos):
 
         http = urllib3.PoolManager()
         for ordinarias_file in super().read_from_file():
-            if ordinarias_file['ano'] != 2020:
+            if ordinarias_file["ano"] != 2020:
                 continue
             for uf in UFS:
+                if uf != "CE":
+                    continue
+                
                 ordinarias_file["siglaUF"] = uf
                 
                 tmp_params = "siglaUF={}, id={}".format(ordinarias_file["siglaUF"],
@@ -47,3 +50,5 @@ class TSE(TSE_Candidatos):
                     # se há eleições na UF
                     if self.r["municipios"]:
                         super().save(full_file_name=file)
+                    else:
+                        logging.info("Sem municípios")

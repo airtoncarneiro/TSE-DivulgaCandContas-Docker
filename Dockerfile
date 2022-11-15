@@ -1,17 +1,27 @@
 FROM python:3.10.8-alpine
 WORKDIR /app
 
-RUN pip install --upgrade pip
-
+COPY . .
 COPY ./requirements.txt .
+
+#RUN apk add tzdata
+#RUN --rm -it -e TZ=America/Sao_Paulo debian date
+
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
 
-COPY . .
-ARG ENV=ordinarias
-ENV TSE_API=${ENV}
+#ARG ENV=ordinarias
+#ENV TSE_API=${ENV}
+#ENV TZ=America/Sao_Paulo
 
-CMD ["python", "main.py"]
+#CMD ["python", "main.py"]
 
-# docker build -t tse/candidatos .
+# docker build -t tse_cand_contas:v0.4 .
 # docker run --name tse-ordinarias -it --rm --entrypoint sh tse/candidatos
 # docker volume create tse-datas
+
+
+#  docker-compose rm --all &&
+#  docker-compose pull &&
+#  docker-compose build --no-cache &&
+#  docker-compose up -d --force-recreate
