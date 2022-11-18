@@ -18,6 +18,7 @@ class TSE(TSE_Candidatos):
         """
         http = urllib3.PoolManager()
         for candidatos_file in super().read_from_file():
+            candidatos_file["nome"] = candidatos_file["cidade"]
             tmp_params = "ano={}, codigo={}, id={}, codCand={}"\
                     .format(candidatos_file["ano"],
                             candidatos_file["codigo"],
@@ -29,7 +30,13 @@ class TSE(TSE_Candidatos):
             if os.path.exists(file):
                 logging.info("Já existe candidato: {}".format(tmp_params))
             else:
-                logging.info("Obter info de candidato: {}".format(tmp_params))
+                logging.info("Obter candidato: "\
+                    "{}, UF={}, Cidade={}, Cargo={}, Nome={}".\
+                        format(tmp_params,
+                               candidatos_file["uf"],
+                               candidatos_file["cidade"],
+                               candidatos_file["cargo"]["nome"],
+                               candidatos_file["nomeUrna"]))
                 
                 url = self._replace_arguments(text=self.url,
                     custom_dict=candidatos_file)
