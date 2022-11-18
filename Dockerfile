@@ -25,3 +25,9 @@ RUN pip install --no-cache-dir --upgrade -r ./requirements.txt
 #  docker-compose pull &&
 #  docker-compose build --no-cache &&
 #  docker-compose up -d --force-recreate
+
+# docker system df --format 'table {{.Type}}\t{{.TotalCount}}\t{{.Size}}'
+# docker build prune
+# docker system df prune -a
+
+# docker run -t -d -P -v "D:\Proj\TSE - Candidaturas\Kubernates\desafio-airton":/app --name teste tse_cand_contas:latest
