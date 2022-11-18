@@ -55,8 +55,8 @@ class TSE_Candidatos():
             self.input_folder = os.path.join(os.getcwd(), 
                                              os.path.normpath(input_folder))
             self.input_file = input_file
-        self.output = os.path.join(os.getcwd(), output_folder, 
-                                   os.path.normpath(output_file))
+        self.output = os.path.normpath(os.path.join(os.getcwd(), \
+            output_folder, output_file))
 
     def save(self, full_file_name:str)->None:
         """Salva o arquivo.

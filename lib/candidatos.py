@@ -30,7 +30,7 @@ class TSE(TSE_Candidatos):
         http = urllib3.PoolManager()
         for municipios_UF_file in super().read_from_file():
             for tipo in TIPOS:
-                if not((tipo == '11') & (municipios_UF_file['nome'] == 'FORTALEZA')):
+                if tipo != '11':
                     continue
                 
                 municipios_UF_file["tipo"] = tipo
@@ -45,13 +45,10 @@ class TSE(TSE_Candidatos):
                 if os.path.exists(file):
                     logging.info("Já existe candidato: {}".format(tmp_params))
                 else:
-                    logging.info("Já existe candidatos: ano={}, codigo={}, "\
-                        "id={}, tipo={}"\
-                        .format(municipios_UF_file["ano"],
-                                municipios_UF_file["codigo"],
-                                municipios_UF_file["id"],
-                                municipios_UF_file["tipo"]
-                                ))
+                    logging.info("Obter lista de candidatos: "\
+                        "{}, UF={}, Cidade={}".format(tmp_params,
+                        municipios_UF_file["uf"],
+                        municipios_UF_file["nome"]))
                     
                     url = self._replace_arguments(text=self.url,
                         custom_dict=municipios_UF_file)

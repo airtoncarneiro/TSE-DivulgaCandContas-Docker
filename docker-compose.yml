@@ -6,7 +6,8 @@ services:
     <<: &default
       image: tse_cand_contas
       volumes:
-        - tse-jsons:/app
+        - D:\Proj\TSE - Candidaturas\Kubernates\desafio-airton:/app
+        #- tse-jsons:/app
       command: ["python", "main.py"]
 
   municipios:
@@ -31,5 +32,5 @@ services:
       - candidatos
 
 
-volumes:
-  tse-jsons:
+# volumes:
+#   tse-jsons:

@@ -16,17 +16,18 @@ class TSE(TSE_Candidatos):
         """Realiza a operação de GET no site do TSE e salve o resultado
            num arquivo sobreescrevendo o método pai.
         """
-        UFS = ["AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", "MA", 
-                "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", 
-                "RS", "RO", "RR", "SC", "SP", "SE", "TO", ]
+        UFS = ["AC","AL","AM",
+               "AP","BA","CE","DF","ES","GO","MA","MG",
+               "MS","MT","PA","PB","PE","PI","PR","RJ",
+               "RN","RO","RR","RS","SC","SE","SP","TO" ]
 
         http = urllib3.PoolManager()
         for ordinarias_file in super().read_from_file():
             if ordinarias_file["ano"] != 2020:
                 continue
             for uf in UFS:
-                if uf != "CE":
-                    continue
+                # if uf != "CE":
+                #     continue
                 
                 ordinarias_file["siglaUF"] = uf
                 
